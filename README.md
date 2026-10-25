@@ -1,6 +1,6 @@
-# Intent Layer — cross-platform starter
+# Opli — Intent Layer cross-platform starter
 
-**Working title.** A local-first, open-source *action layer* for desktop files: choose an outcome, preview every output, and run repeatable recipes on **Windows and macOS**.
+**Intent Layer is the working title for Opli's desktop app.** It is a local-first, open-source *action layer* for desktop files: choose an outcome, preview every output, and run repeatable recipes on **Windows and macOS**.
 
 ## Implemented in source (native behavior awaits platform smoke tests)
 
