@@ -33,7 +33,7 @@ npm run test
 cd src-tauri && cargo test
 ```
 
-Requires platform development prerequisites. On 25 October 2026 the frontend build, 12 Rust tests, Clippy, native Windows binary build, and a limited Windows desktop smoke test passed. The macOS build/UI and hosted CI matrix have not run. See `docs/M0_BASELINE.md`.
+Requires platform development prerequisites. On 25 October 2026 the frontend build, 12 Rust tests, Clippy, native Windows binary build, and a limited Windows desktop smoke test passed. The hosted Windows/macOS CI matrix also passed native builds and automated tests; macOS desktop UI/Finder behavior remains unverified. See `docs/M0_BASELINE.md`.
 
 ## Main behavior
 
@@ -59,5 +59,5 @@ This project is independent of Tangerine for Mac, avoids its trademarks/assets/s
 
 ## Development caveats
 
-The starter was authored without a native build. A Windows native binary now builds and a limited two-file workflow passes; macOS remains unverified. Production releases require code-signing and macOS notarization.
+The starter was authored without a native build. Windows and macOS CI native builds now pass, and a limited two-file workflow passes on a real Windows desktop; macOS desktop behavior remains unverified. Production releases require code-signing and macOS notarization.
 

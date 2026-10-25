@@ -12,7 +12,7 @@ Implementation progress and exact command results: [M0 baseline](M0_BASELINE.md)
 - [ ] 3 Rust recipes produce valid copies with planned destination structure.
 - [ ] Duplicate basenames; file collision; source mutation mid-run; symlinks; low-disk-space behavior tested.
 - [ ] Source checksums unchanged after each workflow.
-- [ ] CI runs frontend build and Rust tests on Windows and macOS. Matrix configured; hosted run not yet verified.
+- [x] CI runs frontend build, Rust tests, and a Tauri native build on Windows and macOS; both hosted jobs passed in [run 40220984709](https://github.com/terboubomar/Opli/actions/runs/40220984709).
 
 - [x] Approved preview ID replaces silent execution replanning; 12 native Rust tests pass on Windows outside the hard-link-restricted sandbox.
 - [x] Frontend production build passes on this Windows host.
