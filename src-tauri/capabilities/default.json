@@ -1,0 +1,1 @@
+{ "identifier": "default", "description": "Minimal permissions for file selection and native drop events", "windows": ["main"], "permissions": ["core:default", "dialog:allow-open"] }
