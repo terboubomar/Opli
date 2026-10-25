@@ -1,0 +1,16 @@
+node_modules/
+dist/
+src-tauri/target/
+*.log
+.DS_Store
+.idea/
+.vscode/
+.env
+.env.*
+.agents/skills/
+.skill-cache/
+.cargo/
+.rustup/
+rustup-init.exe
+rustup-init.exe.sha256
+.test-temp/
