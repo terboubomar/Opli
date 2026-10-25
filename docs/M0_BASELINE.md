@@ -28,8 +28,8 @@ The previous `dd_installer_20261025164057.log` shows an unquoted `--installPath`
 | `npm run tauri -- build --no-bundle --ci` | PASS; optimized Windows executable (no installer bundle or signing). |
 | `npm run tauri -- build --bundles nsis --ci` | PASS; unsigned Windows NSIS installer rebuilt after the final UI fix. The installer has not been installed or smoke tested. |
 | Windows desktop UI smoke test | PASS for native picker, output picker, preview, two-file runs of all three recipes, output change/collision rejection, and source/output SHA-256 equality. See below for exact scope. |
-| macOS native build and automated tests | PASS on the hosted `macos-latest` runner in [workflow run 40220984709](https://github.com/terboubomar/Opli/actions/runs/40220984709). No interactive UI/Finder smoke test was run. |
-| Windows/macOS GitHub Actions matrix | PASS: both hosted jobs completed successfully in [workflow run 40220984709](https://github.com/terboubomar/Opli/actions/runs/40220984709) for commit `f1e5e3b9e42d160337edc4d63813fc799a0e8d44`. Each ran `npm ci`, frontend build/test, Rust fmt/Clippy/tests, and `tauri build --no-bundle --ci`. |
+| macOS native build and automated tests | PASS on the hosted `macos-latest` runner in [post-merge workflow run 40221968764](https://github.com/terboubomar/Opli/actions/runs/40221968764). No interactive UI/Finder smoke test was run. |
+| Windows/macOS GitHub Actions matrix | PASS: both hosted jobs completed successfully in [post-merge workflow run 40221968764](https://github.com/terboubomar/Opli/actions/runs/40221968764) for merge commit `d21202a133fd153e229ea5d1adef55d0d08a58e9`. Each ran `npm ci`, frontend build/test, Rust fmt/Clippy/tests, and `tauri build --no-bundle --ci`. |
 
 ## Defects found and changes
 
@@ -37,7 +37,7 @@ The previous `dd_installer_20261025164057.log` shows an unquoted `--installPath`
 - Source bytes and metadata are checked before execution. Occupied destinations and unsafe output parents reject the plan before copying. Every copy uses an exclusive temporary file and publishes a complete file with an exclusive hard link. Originals are never written by these recipes.
 - The UI originally showed only five preview rows and one failure. It now provides the complete mapping in 100-row pages and all failures, and invalidates plans when selection, recipe, or output folder changes.
 - The initial CI lacked format/lint checks and lockfile-aware installs. The workflow now uses `npm ci`, Vitest, Rust fmt, Clippy, and Rust tests on Windows and macOS runners.
-- The CI workflow also performs a Tauri native binary build on both runners. Its first hosted run completed successfully on the draft PR branch; this does not exercise a desktop window or native file dialogs on macOS.
+- The CI workflow also performs a Tauri native binary build on both runners. It passed on the PR branch and again after merge to `main`; this does not exercise a desktop window or native file dialogs on macOS.
 - A Windows UI smoke run exposed duplicate “Preview again” text on backend errors. A frontend regression test failed before the fix; it and the frontend build pass after the UI appends that instruction only when absent. The final native release binary was rebuilt afterward, but that exact error text has not been rechecked in the rebuilt GUI.
 - The Windows preview exposed an internal `\\?\` path prefix. The UI now strips this prefix for display while retaining the unchanged plan path for execution; a frontend regression test and final native build pass. The post-fix path rendering has not been rechecked in the GUI.
 - A zero-copy run with per-file failures previously used the same green result style as a successful run. It now shows a failure alert, “No files copied,” and the failed-file list; a regression test failed before the fix and passes afterward. The final native executable and installer were rebuilt after this change, but this exact state has not been rechecked in the GUI.
@@ -56,7 +56,7 @@ The unsigned NSIS package is `src-tauri/target/release/bundle/nsis/Intent Layer_
 
 ## Repository and hosted CI evidence
 
-The source is pushed to `terboubomar/Opli` on `codex/intent-layer-m0` and proposed in [draft PR #1](https://github.com/terboubomar/Opli/pull/1). The branch preserves the existing `main` commit in its history; `main` has not been changed. The first PR-triggered matrix run passed on both `windows-latest` and `macos-latest`. Opli's existing `main` uses GPLv3, while this starter's `LICENSE`, Cargo metadata, README, and build spec declare MIT. The draft PR flags this license change for review before merge.
+The source was pushed to `terboubomar/Opli` on `codex/intent-layer-m0` and merged through [PR #1](https://github.com/terboubomar/Opli/pull/1), preserving the previous `main` history. The post-merge matrix passed on both `windows-latest` and `macos-latest`. The previous `main` carried GPLv3; the merged starter's `LICENSE`, Cargo metadata, README, and build spec declare MIT. The user authorized the merge after this license difference was flagged.
 
 ## Remaining risks and priorities
 
@@ -64,8 +64,7 @@ The source is pushed to `terboubomar/Opli` on `codex/intent-layer-m0` and propos
 2. Complete Windows and macOS GUI drop tests for 1/10/100 files, source changes, invalid paths, symlinks/junctions, restricted and low-space outputs, and app restart. Only the Windows picker and two-file cases described above were completed; Windows junction rejection has a passing Rust test.
 3. Hard-link publication can fail on filesystems without support; this yields a per-file failure and leaves originals intact. Validate removable/network destinations on both OSes.
 4. Pathname checks and writes still face races from another process swapping an output directory or reparse point between validation and publication. The [filesystem race audit](FILESYSTEM_RACES.md) specifies platform protections. Same-process plan concurrency tests do not prove hostile same-user filesystem safety.
-5. Review the MIT-versus-GPLv3 change in draft PR #1 before any merge to `main`.
-6. Add progress, cancellation, partial-job recovery, and an output manifest only after the M0 safety gate passes on both platforms.
+5. Add progress, cancellation, partial-job recovery, and an output manifest only after the M0 safety gate passes on both platforms.
 
 ## Manual smoke matrix to execute
 
